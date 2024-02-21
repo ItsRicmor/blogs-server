@@ -14,8 +14,16 @@ class CreateSeries(graphene.Mutation):
 
     def mutate(self, _, title, blogs_id):
 
-        blogs = Blog.objects.filter(pk__in=blogs_id)
-        series = Series(title=title, blogs=blogs)
+        blogs = []
+
+        for id in blogs_id:
+            blogs.append(Blog.objects.get(pk=id))
+            
+        series = Series(title=title)
+        
+        series.save()
+
+        series.blogs.set(blogs)
 
         series.save()
         return CreateSeries(series=series)
