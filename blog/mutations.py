@@ -1,14 +1,9 @@
 import graphene
-from graphene_django import DjangoObjectType
 
-from author_app.models import Author
+from author.models import Author
+
+from .types import BlogType
 from .models import Blog
-
-class BlogType(DjangoObjectType):
-    class Meta:
-        model = Blog
-        fields = "__all__"
-
 
 class CreateBlog(graphene.Mutation):
     class Arguments:
@@ -67,19 +62,9 @@ class DeleteBlog(graphene.Mutation):
 
         blog.delete()
         return DeleteBlog(success=True)
-
-
-class Query(graphene.ObjectType):
-    blogs = graphene.List(BlogType)
-
-    def resolve_blogs(self, _):
-        return Blog.objects.all()
-
+    
 
 class Mutation(graphene.ObjectType):
     create_blog = CreateBlog.Field()
     update_blog = UpdateBlog.Field()
     delete_blog = DeleteBlog.Field()
-
-
-schema = graphene.Schema(query=Query, mutation=Mutation)

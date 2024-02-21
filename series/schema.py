@@ -1,7 +1,7 @@
 import graphene
 from graphene_django import DjangoObjectType
 
-from blog_app.models import Blog
+from blog.models import Blog
 from .models import Series
 
 class SeriesType(DjangoObjectType):

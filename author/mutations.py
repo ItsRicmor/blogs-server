@@ -1,12 +1,7 @@
 import graphene
-from graphene_django import DjangoObjectType
+from author.models import Author
 
-from .models import Author
-
-class AuthorType(DjangoObjectType):
-    class Meta:
-        model = Author
-        fields = "__all__"
+from author.types import AuthorType
 
 
 class CreateAuthor(graphene.Mutation):
@@ -62,18 +57,7 @@ class DeleteAuthor(graphene.Mutation):
         author.delete()
         return DeleteAuthor(success=True)
 
-
-class Query(graphene.ObjectType):
-    authors = graphene.List(AuthorType)
-
-    def resolve_authors(self, _):
-        return Author.objects.all()
-
-
 class Mutation(graphene.ObjectType):
     create_author = CreateAuthor.Field()
     update_author = UpdateAuthor.Field()
     delete_author = DeleteAuthor.Field()
-
-
-schema = graphene.Schema(query=Query, mutation=Mutation)

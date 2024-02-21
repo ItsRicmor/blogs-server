@@ -1,6 +1,6 @@
 
 from django.db import models
-from author_app.models import Author
+from author.models import Author
 
 # Create your models here.
 
